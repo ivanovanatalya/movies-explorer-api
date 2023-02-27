@@ -7,8 +7,6 @@ const movieSchema = new mongoose.Schema({
   country: {
     type: String,
     required: true,
-    minlength: 2,
-    maxlength: 30,
   },
   director: {
     type: String,
@@ -57,7 +55,6 @@ const movieSchema = new mongoose.Schema({
   },
   movieId: {
     type: mongoose.Types.ObjectId,
-    ref: 'user',
   },
   nameRu: {
     type: String,
