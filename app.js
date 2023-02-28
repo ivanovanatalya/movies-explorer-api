@@ -10,7 +10,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const cors = require('./middlewares/cors');
 const limiter = require('./middlewares/limiter');
 
-const { PORT = 3000, LOCALHOST = 'mongodb://localhost:27017/mestodb' } = process.env;
+const { PORT = 3000, LOCALHOST = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
 const app = express();
 
 app.use(helmet());
