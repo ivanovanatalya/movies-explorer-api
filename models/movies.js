@@ -55,12 +55,13 @@ const movieSchema = new mongoose.Schema({
   },
   movieId: {
     type: mongoose.Types.ObjectId,
+    required: true,
   },
-  nameRu: {
+  nameRU: {
     type: String,
     required: true,
   },
-  nameEn: {
+  nameEN: {
     type: String,
     required: true,
   },

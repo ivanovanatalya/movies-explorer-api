@@ -23,10 +23,9 @@ moviesRouter.post('/', celebrate({
     image: Joi.string().required().regex(URL_REGEX),
     trailerLink: Joi.string().required().regex(URL_REGEX),
     thumbnail: Joi.string().required().regex(URL_REGEX),
-    owner: Joi.string().required().hex().length(24),
     movieId: Joi.string().hex().length(24),
-    nameRu: Joi.string().required(),
-    nameEn: Joi.string().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 }), createMovie);
 moviesRouter.delete('/:movieId', celebrate({

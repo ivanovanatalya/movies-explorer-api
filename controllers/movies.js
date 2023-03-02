@@ -27,8 +27,8 @@ const createMovie = (req, res, next) => {
     trailerLink,
     thumbnail,
     movieId,
-    nameRu,
-    nameEn,
+    nameRU,
+    nameEN,
   } = req.body;
   const { _id: owner } = req.user;
   Movie.create({
@@ -42,8 +42,8 @@ const createMovie = (req, res, next) => {
     thumbnail,
     owner,
     movieId,
-    nameRu,
-    nameEn,
+    nameRU,
+    nameEN,
   })
     .then((movie) => res.status(CREATED_CODE).send(movie))
     .catch((err) => {

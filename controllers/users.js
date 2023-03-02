@@ -53,10 +53,10 @@ const createUser = (req, res, next) => {
 };
 
 const updateUser = (req, res, next) => {
-  const { name } = req.body;
+  const { email, name } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { $set: { name } }, // добавить _id в массив, если его там нет
+    { $set: { email, name } }, // добавить _id в массив, если его там нет
     { new: true, runValidators: true },
   )
     .then((user) => {
