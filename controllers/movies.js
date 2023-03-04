@@ -2,12 +2,10 @@
 // это файл контроллеров
 const { mongoose } = require('mongoose');
 const Movie = require('../models/movies');
-const {
-  NotFoundError,
-  ForbiddenError,
-  GeneralError,
-} = require('../middlewares/errors');
 const { CREATED_CODE } = require('../constants');
+const GeneralError = require('../errors/GeneralError');
+const NotFoundError = require('../errors/NotFoundError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 const getAllMovies = (req, res, next) => {
   Movie.find({})
@@ -63,7 +61,7 @@ const deleteMovie = (req, res, next) => {
         throw new NotFoundError('Фильм с указанным _id не найден');
       }
       if (!movie.owner.equals(userId)) {
-        throw new ForbiddenError();
+        throw new ForbiddenError('Действие запрещено');
       }
       return Movie.findByIdAndDelete(movieId);
     })

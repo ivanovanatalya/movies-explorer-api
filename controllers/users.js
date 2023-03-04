@@ -4,12 +4,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken'); // импортируем модуль jsonwebtoken
 const { default: mongoose } = require('mongoose');
 const User = require('../models/users');
-const {
-  GeneralError,
-  NotFoundError,
-  DataConflictError,
-} = require('../middlewares/errors');
 const { SECRET_KEY_DEV } = require('../constants');
+const NotFoundError = require('../errors/NotFoundError');
+const GeneralError = require('../errors/GeneralError');
+const DataConflictError = require('../errors/DataConflictError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 const getCurrentUser = (req, res, next) => {
   const { _id: userId } = req.user;
@@ -54,23 +53,30 @@ const createUser = (req, res, next) => {
 
 const updateUser = (req, res, next) => {
   const { email, name } = req.body;
-  User.findByIdAndUpdate(
-    req.user._id,
-    { $set: { email, name } }, // добавить _id в массив, если его там нет
-    { new: true, runValidators: true },
-  )
-    .then((user) => {
-      if (user === null) {
-        throw new NotFoundError('Пользователь по указанному _id не найден');
+  User.findOne({ email })
+    .then((existingUser) => {
+      if (existingUser !== null) {
+        throw new ForbiddenError('Пользователь с указанным email уже существует');
       }
-      return res.send(user);
+      User.findByIdAndUpdate(
+        req.user._id,
+        { $set: { email, name } }, // добавить _id в массив, если его там нет
+        { new: true, runValidators: true },
+      )
+        .then((user) => {
+          if (user === null) {
+            throw new NotFoundError('Пользователь по указанному _id не найден');
+          }
+          return res.send(user);
+        })
+        .catch((err) => {
+          if (err instanceof mongoose.Error.ValidationError) {
+            return next(new GeneralError('Переданы некорректные данные при создании пользователя'));
+          }
+          return next(err);
+        });
     })
-    .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
-        return next(new GeneralError('Переданы некорректные данные при создании пользователя'));
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 const login = (req, res, next) => {

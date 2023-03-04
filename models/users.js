@@ -2,7 +2,7 @@
 const validator = require('validator');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { UnauthError } = require('../middlewares/errors');
+const UnauthError = require('../errors/UnauthError');
 
 // Опишем схему:
 const userSchema = new mongoose.Schema({
@@ -36,9 +36,9 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
+    required: true,
     minlength: 2,
     maxlength: 30,
-    default: 'Мартин',
   },
 });
 
