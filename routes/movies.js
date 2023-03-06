@@ -5,12 +5,12 @@ const { celebrate, Joi } = require('celebrate');
 
 const moviesRouter = express.Router();
 
+const { URL_REGEX } = require('../utils/constants');
 const {
   getAllMovies,
   createMovie,
   deleteMovie,
 } = require('../controllers/movies');
-const { URL_REGEX } = require('../constants');
 
 moviesRouter.get('/', getAllMovies);
 moviesRouter.post('/', celebrate({

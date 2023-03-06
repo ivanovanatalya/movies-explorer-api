@@ -1,4 +1,4 @@
-const { SERVER_ERROR_CODE } = require('../constants');
+const { SERVER_ERROR_CODE } = require('../utils/constants');
 
 const errorHandler = (err, req, res, next) => {
   // если у ошибки нет статуса, выставляем 500

@@ -9,8 +9,9 @@ const errorHandler = require('./errors/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const cors = require('./middlewares/cors');
 const limiter = require('./middlewares/limiter');
+const { LOCALHOST, PORT } = require('./utils/config');
+const { Message } = require('./utils/constants');
 
-const { PORT = 3000, LOCALHOST = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
 const app = express();
 
 app.use(helmet());
@@ -34,7 +35,7 @@ app.use(cors);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
+    throw new Error(Message.SERVER_ERROR);
   }, 0);
 });
 

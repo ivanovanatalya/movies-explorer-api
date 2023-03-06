@@ -1,6 +1,6 @@
 // models/user.js
 const mongoose = require('mongoose');
-const { URL_REGEX } = require('../constants');
+const { URL_REGEX } = require('../utils/constants');
 
 // Опишем схему:
 const movieSchema = new mongoose.Schema({

@@ -4,11 +4,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken'); // импортируем модуль jsonwebtoken
 const { default: mongoose } = require('mongoose');
 const User = require('../models/users');
-const { SECRET_KEY_DEV } = require('../constants');
+
 const NotFoundError = require('../errors/NotFoundError');
 const GeneralError = require('../errors/GeneralError');
 const DataConflictError = require('../errors/DataConflictError');
 const ForbiddenError = require('../errors/ForbiddenError');
+const { Message } = require('../utils/constants');
+const { SECRET_KEY_DEV } = require('../utils/config');
 
 const getCurrentUser = (req, res, next) => {
   const { _id: userId } = req.user;
@@ -56,7 +58,7 @@ const updateUser = (req, res, next) => {
   User.findOne({ email })
     .then((existingUser) => {
       if (existingUser !== null) {
-        throw new ForbiddenError('Пользователь с указанным email уже существует');
+        throw new ForbiddenError(Message.USER_CONFLICT);
       }
       User.findByIdAndUpdate(
         req.user._id,
@@ -65,13 +67,13 @@ const updateUser = (req, res, next) => {
       )
         .then((user) => {
           if (user === null) {
-            throw new NotFoundError('Пользователь по указанному _id не найден');
+            throw new NotFoundError(Message.USER_NOT_FOUND);
           }
           return res.send(user);
         })
         .catch((err) => {
           if (err instanceof mongoose.Error.ValidationError) {
-            return next(new GeneralError('Переданы некорректные данные при создании пользователя'));
+            return next(new GeneralError(Message.BAD_USER_REQUEST));
           }
           return next(err);
         });
