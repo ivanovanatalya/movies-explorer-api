@@ -1,28 +1,16 @@
 // routes/cards.js
 // это файл маршрутов
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
 const usersRouter = require('./users');
 const moviesRouter = require('./movies');
 const NotFoundError = require('../errors/NotFoundError');
 const auth = require('../middlewares/auth');
 const { login, createUser } = require('../controllers/users');
 const { Message } = require('../utils/constants');
+const { signupValidation, signinValidation } = require('../middlewares/validation');
 
-router.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    name: Joi.string().min(2).max(30).required(),
-  }),
-}), createUser);
-
-router.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login);
+router.post('/signup', signupValidation, createUser);
+router.post('/signin', signinValidation, login);
 
 router.use(auth);
 
