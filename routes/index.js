@@ -9,8 +9,8 @@ const { login, createUser } = require('../controllers/users');
 const { Message } = require('../utils/constants');
 const { signupValidation, signinValidation } = require('../middlewares/validation');
 
-router.post('/signup', signupValidation, createUser);
-router.post('/signin', signinValidation, login);
+router.post('/sign-up', signupValidation, createUser);
+router.post('/sign-in', signinValidation, login);
 
 router.use(auth);
 

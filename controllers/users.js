@@ -57,7 +57,7 @@ const updateUser = (req, res, next) => {
   const { email, name } = req.body;
   User.findOne({ email })
     .then((existingUser) => {
-      if (existingUser !== null) {
+      if (existingUser !== null && `${existingUser._id}` !== req.user._id) {
         throw new ForbiddenError(Message.USER_CONFLICT);
       }
       User.findByIdAndUpdate(

@@ -1,7 +1,7 @@
 // Массив доменов, с которых разрешены кросс-доменные запросы
 const allowedCors = [
-  'https://mesto.ivanovann.nomoredomains.work',
-  'http://mesto.ivanovann.nomoredomains.work',
+  'https://diploma.ivanovann.nomoredomains.work',
+  'http://diploma.ivanovann.nomoredomains.work',
   'localhost:3000',
   'https://localhost:3000',
   'http://localhost:3000',
