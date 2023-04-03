@@ -30,6 +30,7 @@ const createUser = (req, res, next) => {
     email,
     password: pass,
   } = req.body;
+  const { NODE_ENV, JWT_SECRET } = process.env;
 
   bcrypt.hash(pass, 10)
     .then((hashPass) => User.create({
@@ -39,7 +40,12 @@ const createUser = (req, res, next) => {
     })
       .then((user) => {
         const { _doc: { password, ...userRes } } = user;
-        res.send(userRes);
+        const token = jwt.sign(
+          { _id: userRes._id },
+          NODE_ENV === 'production' ? JWT_SECRET : SECRET_KEY_DEV,
+          { expiresIn: 7200 },
+        );
+        res.send({ token, ...userRes });
       })
       .catch((err) => {
         if (err instanceof mongoose.Error.ValidationError) {
